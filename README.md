@@ -21,10 +21,20 @@ This project analyzes patient health metrics data to identify important trends a
 
 ## 📸 Dashboard Visualizations
 
-* **🫀 Main Dashboard**: High-level clinical overview and summary metrics.
-* **📊 Demographic Analysis**: Distribution of Patient Age Category by Sex & Stroke Status.
-* **🏡 Clinical Profile Analysis**: Patient distribution by number of comorbidities, diabetic status, and BMI.
-* **💰 Case Analysis**: Total cases tracked by years alongside the impact of lifestyle risks (smoking and alcohol usage).
+### 🫀 Demographics & Case Volume Dashboard
+Displays the distribution of patients by age, gender, stroke history, and the combined impact of smoking and alcohol usage.
+
+![Demographics & Cases Dashboard](screenshots/demographics_cases_dashboard.png)
+
+### 🏡 Clinical Profile Analysis Dashboard
+Visualizes patient metrics mapping Age vs. BMI vs. Diabetes status alongside specific stroke incidence correlations.
+
+![Clinical Profile Dashboard](screenshots/clinical_profile_dashboard.png)
+
+### 🏃 Lifestyle & General Health Risk Factors
+Tracks correlation between other medical conditions (asthma, kidney disease, skin cancer), race, general health, physical activity, and heart disease.
+
+![Lifestyle Risk Dashboard](screenshots/lifestyle_risk_dashboard.png)
 
 ---
 
@@ -53,6 +63,10 @@ Heart-Disease-Analysis/
 │
 ├── Data/                              # Cleaned patient cardiovascular datasets
 ├── Project Demonstration/             # Demonstration documents and video metadata
+├── screenshots/                       # Dashboard screenshots and visualization images
+│   ├── clinical_profile_dashboard.png
+│   ├── demographics_cases_dashboard.png
+│   └── lifestyle_risk_dashboard.png
 ├── Templates/                         # Project templates categorized by phases
 │   ├── 1. Brainstorming & Ideation/   # Brainstorming templates and problem statements
 │   ├── 2. Requirement Analysis/       # Solution requirements and technology stack files
