@@ -1,0 +1,19 @@
+DATA FLOW DIAGRAM (DFD) OVERVIEW
+
+[Data Source Layer]
+   - Raw relational observations file: Heart_new2.csv (18 features, 4,494 records)
+          │
+          ▼
+[Analytics & Serialization Layer]
+   - Tableau Data Engine loads, structures, and clusters features into worksheets.
+   - Dashboards and Stories published up to the Tableau Public Cloud infrastructure.
+          │
+          ▼
+[Backend Web Routing Engine]
+   - Local Python Flask WSGI app environment (app.py) processes client GET requests.
+   - Jinja2 engine renders core templates/index.html UI wrapper layouts safely.
+          │
+          ▼
+[Client Presentation Layer]
+   - Web browser requests cloud packages from Tableau Public JavaScript script blocks.
+   - Interactive data visualizations load dynamically inside sandboxed container divs.
