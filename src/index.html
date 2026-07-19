@@ -1,344 +1,574 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart Disease Analytics Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Professional, custom color scheme */
-        :root {
-            --primary: #dc3545;       /* Clinical Red */
-            --primary-hover: #b02a37;
-            --secondary: #1a252f;     /* Deep Slate Navy */
-            --dark: #2c3e50;
-            --bg-light: #f8f9fa;
-            --gray-text: #6c757d;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Rising Above Heart Disease: An interactive heart disease data visualization dashboard transforming BRFSS healthcare data into intuitive, actionable visual stories for preventive care.">
+  <meta name="keywords" content="heart disease, data visualization, healthcare, dashboard, cardiology, preventive care, BRFSS">
+  <meta name="author" content="Rising Above Heart Disease">
+  <title>Rising Above Heart Disease — Dashboard</title>
 
-        body {
-            font-family: "Open Sans", sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            color: var(--dark);
-            scroll-behavior: smooth;
-        }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        h1, h2, h3, h4 {
-            font-family: "Poppins", sans-serif;
-            color: var(--secondary);
-        }
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 
-        /* Top Navigation Header bar */
-        header {
-            background-color: #ffffff;
-            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.05);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 50px;
-            z-index: 9999;
-        }
-
-        .logo {
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: var(--secondary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo span {
-            color: var(--primary);
-        }
-
-        nav a {
-            color: var(--secondary);
-            text-decoration: none;
-            font-family: "Poppins", sans-serif;
-            font-weight: 500;
-            font-size: 15px;
-            padding: 10px 15px;
-            margin: 0 3px;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--primary);
-        }
-
-        .btn-get-started {
-            background: var(--primary);
-            color: #ffffff;
-            padding: 10px 22px;
-            border-radius: 4px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: 0.3s;
-            margin-left: 15px;
-        }
-
-        .btn-get-started:hover {
-            background: var(--primary-hover);
-            color: #ffffff;
-        }
-
-        /* Hero Landing Section */
-        .hero {
-            width: 100%;
-            height: 85vh;
-            background: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1920&q=80') center center no-repeat;
-            background-size: cover;
-            position: relative;
-            margin-top: 80px;
-            display: flex;
-            align-items: center;
-        }
-
-        .hero::before {
-            content: "";
-            position: absolute;
-            background: rgba(255, 255, 255, 0.88);
-            top: 0;
-            right: 0;
-            left: 0;
-            bottom: 0;
-        }
-
-        .hero-content {
-            position: relative;
-            max-width: 800px;
-            padding: 0 50px;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 44px;
-            font-weight: 700;
-            line-height: 54px;
-            margin-bottom: 20px;
-            color: var(--secondary);
-        }
-
-        .hero p {
-            color: #5a6c7d;
-            font-size: 20px;
-            line-height: 30px;
-            margin-bottom: 35px;
-        }
-
-        /* Content Container grid sections */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 80px 20px;
-        }
-
-        /* Overview Row Setup */
-        .about-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 60px;
-        }
-
-        .about-text {
-            flex: 1.2;
-        }
-
-        .about-text h2 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .about-text h2::after {
-            content: '';
-            width: 40px;
-            height: 3px;
-            background: var(--primary);
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-        }
-
-        .about-image {
-            flex: 0.8;
-            text-align: center;
-        }
-
-        .about-image img {
-            max-width: 100%;
-            border-radius: 6px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-        }
-
-        /* Analytics Workspace View Blocks */
-        .work-section {
-            background-color: var(--bg-light);
-            padding: 80px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title h2::after {
-            content: '';
-            width: 40px;
-            height: 3px;
-            background: var(--primary);
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .section-title p {
-            color: var(--gray-text);
-            font-size: 16px;
-        }
-
-        .dashboard-card {
-            background: #ffffff;
-            padding: 35px;
-            border-radius: 6px;
-            border: 1px solid #e9ecef;
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.02);
-            margin-bottom: 45px;
-        }
-
-        .dashboard-card h3 {
-            font-size: 20px;
-            margin-top: 0;
-            color: var(--secondary);
-            border-left: 4px solid var(--primary);
-            padding-left: 12px;
-        }
-
-        .embed-wrapper {
-            width: 100%;
-            min-height: 600px;
-            margin-top: 20px;
-            background: #fafafa;
-            border-radius: 4px;
-        }
-
-        footer {
-            background: var(--secondary);
-            padding: 35px 0;
-            color: #ffffff;
-            text-align: center;
-            font-family: "Poppins", sans-serif;
-            font-size: 14px;
-            letter-spacing: 0.3px;
-        }
-    </style>
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <header>
-        <a href="#" class="logo">Heart<span>Insight</span></a>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#about">Project Overview</a>
-            <a href="#dashboards">Visual Dashboards</a>
-            <a href="#story">Analysis Story</a>
-            <a href="#dashboards" class="btn-get-started">Explore Data</a>
-        </nav>
-    </header>
+  <!-- Background Effects -->
+  <div class="bg-orbs">
+    <div class="bg-orb"></div>
+    <div class="bg-orb"></div>
+    <div class="bg-orb"></div>
+  </div>
+  <canvas id="particles-canvas"></canvas>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Cardiovascular Health Risk Factors Analysis</h1>
-            <p>An interactive data visualization platform utilizing Flask and Tableau architectures to investigate clinical and behavioral dependencies in chronic heart disease diagnostics.</p>
-            <a href="#about" class="btn-get-started">Begin Review <span style="margin-left:5px;">&rarr;</span></a>
+  <!-- App Layout -->
+  <div class="app-layout">
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="logo-icon">🫀</div>
+          <div class="logo-text">
+            <span class="logo-title">Rising Above</span>
+            <span class="logo-subtitle">Heart Disease Analytics</span>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <section id="about" class="container">
-        <div class="about-row">
-            <div class="about-text">
-                <h2>Clinical Context & Core Objectives</h2>
-                <p style="font-size: 16px; line-height: 28px; color: #4f5f6f;">
-                    Chronic cardiovascular conditions represent complex clinical profiles influenced significantly by lifestyle behaviors and secondary pathologies. 
-                    According to database research tracking tracking key historical populations, variables such as patient BMI metrics, smoking frequencies, and alcohol usage demonstrate notable co-occurrence intervals with underlying conditions like clinical diabetes and prior stroke histories.
-                </p>
-            </div>
-            <div class="about-image">
-                <img src="https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?auto=format&fit=crop&w=600&q=80" alt="Cardiovascular Assessment Image">
-            </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-panel="overview" id="nav-overview">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Overview</span>
+        </button>
+        <button class="nav-item" data-panel="demographics" id="nav-demographics">
+          <span class="nav-icon">👥</span>
+          <span class="nav-label">Demographics</span>
+        </button>
+        <button class="nav-item" data-panel="conditions" id="nav-conditions">
+          <span class="nav-icon">🩺</span>
+          <span class="nav-label">Health Conditions</span>
+        </button>
+        <button class="nav-item" data-panel="lifestyle" id="nav-lifestyle">
+          <span class="nav-icon">🏃</span>
+          <span class="nav-label">Lifestyle & Risk</span>
+        </button>
+        <button class="nav-item" data-panel="calculator" id="nav-calculator">
+          <span class="nav-icon">🧮</span>
+          <span class="nav-label">Risk Calculator</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>Rising Above Heart Disease © 2026<br>Data-Driven Preventive Care</p>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="main-header">
+        <div class="header-left">
+          <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+          <h1 class="header-title">
+            <span>Rising Above</span> Heart Disease
+          </h1>
         </div>
-    </section>
-
-    <section id="dashboards" class="work-section">
-        <div class="container" style="padding: 0 20px;">
-            
-            <div class="section-title">
-                <h2>Interactive Workspace</h2>
-                <p>Use the filtering criteria below to dynamically segment database variables across our three main dashboards.</p>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Dashboard 1: Demographic Risk Assessment</h3>
-                <div class="embed-wrapper">
-                <div class='tableauPlaceholder' id='viz1783666567644' style='position: relative'><noscript><a href='#'><img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Bo&#47;Book1_17836025117010&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Book1_17836025117010&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Bo&#47;Book1_17836025117010&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-GB' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1783666567644');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else { vizElement.style.width='100%';vizElement.style.height='1477px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-                    </div>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Dashboard 2: Behavioral Diagnostic Factors</h3>
-                <div class="embed-wrapper">
-                <div class='tableauPlaceholder' id='viz1783666612440' style='position: relative'><noscript><a href='#'><img alt='Dashboard 2 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Bo&#47;Book2_17836029285490&#47;Dashboard2&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Book2_17836029285490&#47;Dashboard2' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Bo&#47;Book2_17836029285490&#47;Dashboard2&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-GB' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1783666612440');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else { vizElement.style.width='100%';vizElement.style.height='1677px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-                    </div>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Dashboard 3: Clinical Co-morbidities Profile</h3>
-                <div class="embed-wrapper">
-                <div class='tableauPlaceholder' id='viz1783666630371' style='position: relative'><noscript><a href='#'><img alt='Dashboard 3 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Bo&#47;Book3_17836029698670&#47;Dashboard3&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Book3_17836029698670&#47;Dashboard3' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Bo&#47;Book3_17836029698670&#47;Dashboard3&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-GB' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1783666630371');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else { vizElement.style.width='100%';vizElement.style.height='877px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-                    </div>
-            </div>
-
+        <div class="header-right">
+          <div class="header-badge">
+            <div class="badge-dot"></div>
+            <span id="header-count">Loading...</span>
+          </div>
+          <div class="header-badge">
+            <span>🩺</span>
+            <span id="header-prevalence">--</span>
+          </div>
         </div>
-    </section>
+      </header>
 
-    <section id="story" class="container">
-        <div class="section-title">
-            <h2>Data Story Presentation</h2>
-            <p>Step sequentially through our clinical narrative outlining path correlations within the dataset.</p>
-        </div>
+      <!-- Dashboard Content -->
+      <div class="dashboard-content">
 
-        <div class="dashboard-card" style="box-shadow: 0px 4px 20px rgba(0,0,0,0.03);">
-            <h3>Comprehensive Diagnostic Narrative</h3>
-            <div class="embed-wrapper">
-            <div class='tableauPlaceholder' id='viz1783667272968' style='position: relative'><noscript><a href='#'><img alt='Story 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Bo&#47;Book4_17836030139220&#47;Story1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Book4_17836030139220&#47;Story1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Bo&#47;Book4_17836030139220&#47;Story1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-GB' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1783667272968');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='1016px';vizElement.style.height='991px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+        <!-- ═══════════════ OVERVIEW PANEL ═══════════════ -->
+        <section class="dashboard-panel active" id="panel-overview">
+          <div class="panel-header">
+            <h2 class="panel-title">📊 Dashboard Overview</h2>
+            <p class="panel-subtitle">High-level cardiac health insights from BRFSS survey data</p>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card violet">
+              <div class="kpi-icon">👥</div>
+              <div class="kpi-value" id="kpi-total">0</div>
+              <div class="kpi-label">Total Respondents</div>
+            </div>
+            <div class="kpi-card coral">
+              <div class="kpi-icon">❤️‍🩹</div>
+              <div class="kpi-value" id="kpi-diseased">0</div>
+              <div class="kpi-label">Heart Disease Cases</div>
+            </div>
+            <div class="kpi-card emerald">
+              <div class="kpi-icon">💚</div>
+              <div class="kpi-value" id="kpi-healthy">0</div>
+              <div class="kpi-label">Healthy</div>
+            </div>
+            <div class="kpi-card cyan">
+              <div class="kpi-icon">📈</div>
+              <div class="kpi-value" id="kpi-prevalence">0%</div>
+              <div class="kpi-label">Prevalence Rate</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-icon">⚖️</div>
+              <div class="kpi-value" id="kpi-avg-bmi">0</div>
+              <div class="kpi-label">Average BMI</div>
+            </div>
+          </div>
+
+          <div class="chart-grid cols-2-1">
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">📊</span> Heart Disease by Age Group</div>
+                <span class="card-badge">Bar Chart</span>
+              </div>
+              <div class="chart-wrap"><canvas id="ageDistributionChart"></canvas></div>
+            </div>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🍩</span> Diagnosis Split</div>
+                <span class="card-badge">Donut</span>
+              </div>
+              <div class="chart-wrap"><canvas id="diagnosisDonut"></canvas></div>
+            </div>
+          </div>
+
+          <div class="chart-grid cols-2" style="margin-top: 22px;">
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🏥</span> General Health vs Heart Disease</div>
+                <span class="card-badge">Grouped Bar</span>
+              </div>
+              <div class="chart-wrap"><canvas id="genHealthChart"></canvas></div>
+            </div>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🚻</span> Gender vs Heart Disease</div>
+                <span class="card-badge">Grouped Bar</span>
+              </div>
+              <div class="chart-wrap"><canvas id="genderDiseaseChart"></canvas></div>
+            </div>
+          </div>
+
+          <div class="insight-row" style="margin-top: 22px;">
+            <div class="insight-card">
+              <div class="insight-icon coral">⚡</div>
+              <div class="insight-content">
+                <h4>Key Finding</h4>
+                <p id="insight-1">Loading insights...</p>
+              </div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon cyan">🔬</div>
+              <div class="insight-content">
+                <h4>Clinical Insight</h4>
+                <p id="insight-2">Loading insights...</p>
+              </div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon emerald">🛡️</div>
+              <div class="insight-content">
+                <h4>Prevention Note</h4>
+                <p id="insight-3">Loading insights...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════ DEMOGRAPHICS PANEL ═══════════════ -->
+        <section class="dashboard-panel" id="panel-demographics">
+          <div class="panel-header">
+            <h2 class="panel-title">👥 Demographics Analysis</h2>
+            <p class="panel-subtitle">Population breakdown by age, gender, and race</p>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card violet">
+              <div class="kpi-icon">👨</div>
+              <div class="kpi-value" id="kpi-male">0</div>
+              <div class="kpi-label">Male</div>
+            </div>
+            <div class="kpi-card coral">
+              <div class="kpi-icon">👩</div>
+              <div class="kpi-value" id="kpi-female">0</div>
+              <div class="kpi-label">Female</div>
+            </div>
+            <div class="kpi-card emerald">
+              <div class="kpi-icon">😴</div>
+              <div class="kpi-value" id="kpi-avg-sleep">0</div>
+              <div class="kpi-label">Avg Sleep (hrs)</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-icon">🌍</div>
+              <div class="kpi-value" id="kpi-races">0</div>
+              <div class="kpi-label">Race Groups</div>
+            </div>
+          </div>
+
+          <div class="chart-grid cols-2">
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">📊</span> Age-Gender Population Pyramid</div>
+                <span class="card-badge">Horizontal Bar</span>
+              </div>
+              <div class="chart-wrap tall"><canvas id="ageGenderPyramid"></canvas></div>
+            </div>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🌍</span> Race Distribution</div>
+                <span class="card-badge">Bar Chart</span>
+              </div>
+              <div class="chart-wrap tall"><canvas id="raceChart"></canvas></div>
+            </div>
+          </div>
+
+          <div class="chart-grid cols-2" style="margin-top: 22px;">
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">📈</span> Age Group & Disease Rate</div>
+                <span class="card-badge">Combo</span>
+              </div>
+              <div class="chart-wrap"><canvas id="ageDiseaseRateChart"></canvas></div>
+            </div>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🍩</span> Gender Split</div>
+                <span class="card-badge">Donut</span>
+              </div>
+              <div class="chart-wrap"><canvas id="genderDonut"></canvas></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════ HEALTH CONDITIONS PANEL ═══════════════ -->
+        <section class="dashboard-panel" id="panel-conditions">
+          <div class="panel-header">
+            <h2 class="panel-title">🩺 Health Conditions</h2>
+            <p class="panel-subtitle">Diabetes, stroke, kidney disease, asthma, and their correlation with heart disease</p>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card coral">
+              <div class="kpi-icon">🩸</div>
+              <div class="kpi-value" id="kpi-diabetic">0%</div>
+              <div class="kpi-label">Diabetic</div>
+            </div>
+            <div class="kpi-card violet">
+              <div class="kpi-icon">🧠</div>
+              <div class="kpi-value" id="kpi-stroke">0%</div>
+              <div class="kpi-label">Stroke History</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-icon">🫘</div>
+              <div class="kpi-value" id="kpi-kidney">0%</div>
+              <div class="kpi-label">Kidney Disease</div>
+            </div>
+            <div class="kpi-card cyan">
+              <div class="kpi-icon">🌬️</div>
+              <div class="kpi-value" id="kpi-asthma">0%</div>
+              <div class="kpi-label">Asthma</div>
+            </div>
+          </div>
+
+          <div class="chart-grid cols-2">
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🩸</span> Diabetic Status vs Heart Disease</div>
+                <span class="card-badge">Grouped Bar</span>
+              </div>
+              <div class="chart-wrap"><canvas id="diabeticChart"></canvas></div>
+            </div>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🧠</span> Stroke vs Heart Disease</div>
+                <span class="card-badge">Stacked Bar</span>
+              </div>
+              <div class="chart-wrap"><canvas id="strokeChart"></canvas></div>
+            </div>
+          </div>
+
+          <div class="chart-grid cols-3" style="margin-top: 22px;">
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🫘</span> Kidney Disease</div>
+                <span class="card-badge">Stacked Bar</span>
+              </div>
+              <div class="chart-wrap"><canvas id="kidneyChart"></canvas></div>
+            </div>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🌬️</span> Asthma</div>
+                <span class="card-badge">Stacked Bar</span>
+              </div>
+              <div class="chart-wrap"><canvas id="asthmaChart"></canvas></div>
+            </div>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">☀️</span> Skin Cancer</div>
+                <span class="card-badge">Stacked Bar</span>
+              </div>
+              <div class="chart-wrap"><canvas id="skinCancerChart"></canvas></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════ LIFESTYLE & RISK PANEL ═══════════════ -->
+        <section class="dashboard-panel" id="panel-lifestyle">
+          <div class="panel-header">
+            <h2 class="panel-title">🏃 Lifestyle & Risk Factors</h2>
+            <p class="panel-subtitle">Smoking, BMI, physical activity, alcohol, sleep, and difficulty walking</p>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card coral">
+              <div class="kpi-icon">🚬</div>
+              <div class="kpi-value" id="kpi-smokers">0</div>
+              <div class="kpi-label">Smokers</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-icon">⚖️</div>
+              <div class="kpi-value" id="kpi-avg-bmi-2">0</div>
+              <div class="kpi-label">Avg BMI</div>
+            </div>
+            <div class="kpi-card violet">
+              <div class="kpi-icon">🍺</div>
+              <div class="kpi-value" id="kpi-alcohol">0%</div>
+              <div class="kpi-label">Alcohol Drinkers</div>
+            </div>
+            <div class="kpi-card emerald">
+              <div class="kpi-icon">🏋️</div>
+              <div class="kpi-value" id="kpi-active">0%</div>
+              <div class="kpi-label">Physically Active</div>
+            </div>
+          </div>
+
+          <div class="chart-grid cols-2">
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🚬</span> Smoking vs Heart Disease</div>
+                <span class="card-badge">Stacked Bar</span>
+              </div>
+              <div class="chart-wrap"><canvas id="smokingChart"></canvas></div>
+            </div>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">⚖️</span> BMI Distribution</div>
+                <span class="card-badge">Histogram</span>
+              </div>
+              <div class="chart-wrap"><canvas id="bmiDistChart"></canvas></div>
+            </div>
+          </div>
+
+          <div class="chart-grid cols-3" style="margin-top: 22px;">
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🏋️</span> Physical Activity</div>
+                <span class="card-badge">Stacked Bar</span>
+              </div>
+              <div class="chart-wrap"><canvas id="activityChart"></canvas></div>
+            </div>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">😴</span> Sleep Time</div>
+                <span class="card-badge">Histogram</span>
+              </div>
+              <div class="chart-wrap"><canvas id="sleepChart"></canvas></div>
+            </div>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🚶</span> Difficulty Walking</div>
+                <span class="card-badge">Stacked Bar</span>
+              </div>
+              <div class="chart-wrap"><canvas id="diffWalkChart"></canvas></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════ RISK CALCULATOR PANEL ═══════════════ -->
+        <section class="dashboard-panel" id="panel-calculator">
+          <div class="panel-header">
+            <h2 class="panel-title">🧮 Personal Risk Calculator</h2>
+            <p class="panel-subtitle">Enter your health parameters to assess your heart disease risk</p>
+          </div>
+
+          <div class="calculator-layout">
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">📝</span> Your Health Profile</div>
+              </div>
+              <form class="calc-form" id="calc-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="calc-age">🎂 Age Group</label>
+                    <select class="form-select" id="calc-age">
+                      <option value="18-24">18-24</option>
+                      <option value="25-29">25-29</option>
+                      <option value="30-34">30-34</option>
+                      <option value="35-39">35-39</option>
+                      <option value="40-44">40-44</option>
+                      <option value="45-49">45-49</option>
+                      <option value="50-54" selected>50-54</option>
+                      <option value="55-59">55-59</option>
+                      <option value="60-64">60-64</option>
+                      <option value="65-69">65-69</option>
+                      <option value="70-74">70-74</option>
+                      <option value="75-79">75-79</option>
+                      <option value="80 or older">80 or older</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-sex">🚻 Sex</label>
+                    <select class="form-select" id="calc-sex">
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                  </div>
                 </div>
-        </div>
-    </section>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="calc-bmi">⚖️ BMI</label>
+                    <input type="number" class="form-input" id="calc-bmi" placeholder="e.g. 28" min="10" max="100" step="0.1" value="28">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-sleep">😴 Sleep (hrs/night)</label>
+                    <input type="number" class="form-input" id="calc-sleep" placeholder="e.g. 7" min="1" max="24" value="7">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="calc-smoking">🚬 Smoking</label>
+                    <select class="form-select" id="calc-smoking">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-alcohol">🍺 Alcohol Drinking</label>
+                    <select class="form-select" id="calc-alcohol">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="calc-diabetic">🩸 Diabetic</label>
+                    <select class="form-select" id="calc-diabetic">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                      <option value="Borderline">Borderline</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-stroke">🧠 Stroke History</label>
+                    <select class="form-select" id="calc-stroke">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="calc-activity">🏋️ Physical Activity</label>
+                    <select class="form-select" id="calc-activity">
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-health">🏥 General Health</label>
+                    <select class="form-select" id="calc-health">
+                      <option value="Excellent">Excellent</option>
+                      <option value="Very good">Very good</option>
+                      <option value="Good" selected>Good</option>
+                      <option value="Fair">Fair</option>
+                      <option value="Poor">Poor</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="calc-diffwalk">🚶 Difficulty Walking</label>
+                    <select class="form-select" id="calc-diffwalk">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-kidney">🫘 Kidney Disease</label>
+                    <select class="form-select" id="calc-kidney">
+                      <option value="No">No</option>
+                      <option value="Yes">Yes</option>
+                    </select>
+                  </div>
+                </div>
+                <button type="button" class="calc-btn" id="calculateRisk">
+                  🚀 Calculate My Risk Score
+                </button>
+              </form>
+            </div>
 
-    <footer>
-        <p>&copy; HeartInsight Research Platform. Developed for Academic Project Fulfillment | Powered by Flask & Tableau Public</p>
-    </footer>
+            <div class="glass-card">
+              <div class="card-header">
+                <div class="card-title"><span class="card-icon">🎯</span> Your Risk Profile</div>
+              </div>
+              <div class="risk-result" id="risk-result">
+                <div class="gauge-container">
+                  <canvas id="riskGaugeCanvas"></canvas>
+                  <div class="gauge-center-text">
+                    <div class="gauge-score" id="gauge-score">--</div>
+                    <div class="gauge-label">Risk Score</div>
+                  </div>
+                </div>
+                <div class="risk-level-badge" id="risk-level-badge" style="background: rgba(100,100,100,0.2); color: var(--text-muted);">
+                  Enter your details
+                </div>
+                <div class="risk-factors-list" id="risk-factors-list">
+                  <h4>📋 Risk Factors Detected</h4>
+                  <div class="risk-factor-item">
+                    <div class="risk-factor-dot" style="background: var(--text-muted);"></div>
+                    <span>Fill in the form and click calculate</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <div class="insight-row" style="margin-top: 22px;">
+            <div class="insight-card" style="grid-column: 1 / -1;">
+              <div class="insight-icon amber">⚠️</div>
+              <div class="insight-content">
+                <h4>Medical Disclaimer</h4>
+                <p>This risk calculator is for educational and demonstration purposes only. It uses a simplified logistic model based on BRFSS survey data. It should NOT be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
