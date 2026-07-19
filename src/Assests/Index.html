@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Analytics Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo">Heart<span>Insight</span></a>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/dashboard">Visual Dashboards</a>
+            <a href="/story">Analysis Story</a>
+            <a href="/brands">Brands Matrix</a>
+            <a href="/dashboard" class="btn-get-started">Explore Data</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Cardiovascular Health Risk Factors Analysis</h1>
+            <p>An interactive data visualization platform utilizing Flask and Tableau architectures to investigate clinical and behavioral dependencies in chronic heart disease diagnostics.</p>
+            <a href="/dashboard" class="btn-get-started">Begin Review <span style="margin-left:5px;">&rarr;</span></a>
+        </div>
+    </section>
+
+    <section id="about" class="container">
+        <div class="about-row">
+            <div class="about-text">
+                <h2>Clinical Context & Core Objectives</h2>
+                <p style="font-size: 16px; line-height: 28px; color: #4f5f6f;">
+                    Chronic cardiovascular conditions represent complex clinical profiles influenced significantly by lifestyle behaviors and secondary pathologies. 
+                    According to database research tracking key historical populations, variables such as patient BMI metrics, smoking frequencies, and alcohol usage demonstrate notable co-occurrence intervals with underlying conditions like clinical diabetes and prior stroke histories.
+                </p>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?auto=format&fit=crop&w=600&q=80" alt="Cardiovascular Assessment Image">
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; HeartInsight Research Platform. Developed for Academic Project Fulfillment | Powered by Flask & Tableau Public</p>
+    </footer>
+
+</body>
+</html>
