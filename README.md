@@ -10,12 +10,15 @@ This project analyzes patient health metrics data to identify important trends a
 
 ---
 
-## 🌐 Live Demo
+## 🌐 Project Links & Demos
 
-| Component | URL |
+| Resource | Link |
 | :--- | :--- |
 | **📖 Primary: Tableau Story** | [View Tableau Story](https://public.tableau.com/app/profile/k.bhargav/viz/Book4_17836030139220/Story1?publish=yes) |
 | **📊 Secondary: Tableau Dashboard** | [View Tableau Dashboard](https://public.tableau.com/app/profile/k.bhargav/viz/Book1_17836025117010/Dashboard1?publish=yes) |
+| **🎨 Tableau Public Profile** | [Kamakula Bhargav Profile](https://public.tableau.com/app/profile/kamakula.bhargav) |
+| **🎥 Demonstration Video** | [Watch Demo Video (Google Drive)](https://drive.google.com/drive/folders/1czFlCzhq5690-MwqRfjZWY8wK8k9T5zG?usp=sharing) |
+| **💻 Git Repository** | [GitHub Repository](https://github.com/Bhargavkamakula/Heart-Diseases-Analysis.git) |
 
 ---
 
